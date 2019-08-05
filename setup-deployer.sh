@@ -6,7 +6,7 @@
 ##       Install Instructions     ##
 ##                                ##
 ##  adduser bridgechain           ##
-##  usermod -aG  bridgechain  ##
+##  usermod -aG sudo bridgechain  ##
 ##  su bridgechain                ##
 ##  cd ~                          ##
 ##  bash setup-deployer.sh        ##
@@ -19,16 +19,16 @@ if [ "$EID" == "0" ]; then
 fi
 
 ## Update and Install Initial Packages
- apt-get update &&  apt-get install -y jq git curl software-properties-common
+sudo apt-get update && sudo apt-get install -y jq git curl software-properties-common
 
 ## Install NodeJS & NPM
-curl -sL https://deb.nodesource.com/setup_11.x |  bash -
- apt-get update &&  apt-get install -y nodejs
+curl -sL https://deb.nodesource.com/setup_11.x | sudo bash -
+sudo apt-get update && sudo apt-get install -y nodejs
 
 ## Install Yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg |  apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" |  tee /etc/apt/sources.list.d/yarn.list
- apt-get update &&  apt-get install -y yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt-get update && sudo apt-get install -y yarn
 
 ## Config
 rm -rf "$HOME/.deployer/infinitydollor/"
@@ -178,10 +178,10 @@ API_PORT=$(jq -r '.apiPort' "$CONFIG_PATH")
 P2P_PORT=$(jq -r '.p2pPort' "$CONFIG_PATH")
 EXPLORER_PORT=$(jq -r '.explorerPort' "$CONFIG_PATH")
 
-IP=$( ifconfig | fgrep "inet " | fgrep -v "inet 127." | egrep -o "inet ([0-9]+\.?){4}" | awk '{print $2}' | head -n 1)
+IP=$(sudo ifconfig | fgrep "inet " | fgrep -v "inet 127." | egrep -o "inet ([0-9]+\.?){4}" | awk '{print $2}' | head -n 1)
 
 echo 'Rebooting Machine - check back in a few minutes on the below:'
 echo "  Core P2P API: http://$IP:$P2P_PORT/"
 echo "  Core Public API: http://$IP:$API_PORT/"
 echo "  Explorer: http://$IP:$EXPLORER_PORT/"
-# reboot
+#sudo reboot
